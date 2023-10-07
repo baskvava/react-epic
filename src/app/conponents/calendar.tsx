@@ -67,7 +67,7 @@ export default function Calendar() {
   return (
     <>
       {/* calendar wrapper */}
-      <div className="w-full max-w-sm flex flex-col justify-center border-solid border-2 border-blue-900 p-2">
+      <div className="w-full max-w-sm h-fit flex flex-col justify-center border-solid border-2 border-blue-900 p-2">
         {/* title */}
         <div className="w-full flex justify-around py-2">
           <button onClick={() => setCurrentYear(currentYear - 1)}>
