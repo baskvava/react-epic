@@ -1,6 +1,6 @@
 # React Epic ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)
 
-> This is a project to demo how to create common react components from scratch. Built by `Next.js` and `Tailwind css`
+> Demos how to create common react components from scratch. Built by `Next.js` and `Tailwind css`
 
 Try as much as possible without using library from outside. This is a nice way to practice and deeply understand how it works
 
