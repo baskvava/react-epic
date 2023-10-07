@@ -6,9 +6,9 @@ Try as much as possible without using library from outside. This is a nice way t
 
 ## Components
 
-[x] Calendar
+- [x] Calendar
 
-[] Carousel (on going)
+- [ ] Carousel (on going)
 
 ## Getting Started
 
