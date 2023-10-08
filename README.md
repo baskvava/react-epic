@@ -1,8 +1,12 @@
 # React Epic ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)
 
-> Demos how to create common react components from scratch. Built by `Next.js` and `Tailwind css`
+> Demo for how to create common react components from scratch? Built by `Next.js` and `Tailwind css`
 
-Try as much as possible without using library from outside. This is a nice way to practice and deeply understand how it works
+The benefits to try as much as possible without using library from outside.
+
+- Practice and deeply understand how it works.
+
+- Learn components system design.
 
 ## Components
 

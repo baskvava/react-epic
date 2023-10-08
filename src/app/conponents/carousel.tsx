@@ -1,89 +1,181 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
-import { Transform } from "stream";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const images = [
-  { id: 0, src: "/carousel-1.jpg", width: 500, height: 500, alt: "dog 1" },
-  { id: 1, src: "/carousel-2.jpg", width: 500, height: 500, alt: "dog 3" },
-  { id: 2, src: "/carousel-3.jpg", width: 500, height: 500, alt: "dog 4" },
-  { id: 3, src: "/carousel-4.jpg", width: 500, height: 500, alt: "dog 5" },
+const IMAGE_LENGTH = 4;
+
+const imagesData = [
+  {
+    id: 0,
+    idx: 3,
+    src: "/carousel-4.jpg",
+    width: 500,
+    height: 500,
+    alt: "dog 5",
+  },
+  {
+    id: 1,
+    idx: 0,
+    src: "/carousel-1.jpg",
+    width: 500,
+    height: 500,
+    alt: "dog 1",
+  },
+  {
+    id: 2,
+    idx: 1,
+    src: "/carousel-2.jpg",
+    width: 500,
+    height: 500,
+    alt: "dog 3",
+  },
+  {
+    id: 3,
+    idx: 2,
+    src: "/carousel-3.jpg",
+    width: 500,
+    height: 500,
+    alt: "dog 4",
+  },
+  {
+    id: 4,
+    idx: 3,
+    src: "/carousel-4.jpg",
+    width: 500,
+    height: 500,
+    alt: "dog 5",
+  },
+  {
+    id: 5,
+    idx: 0,
+    src: "/carousel-1.jpg",
+    width: 500,
+    height: 500,
+    alt: "dog 1",
+  },
 ];
 
+// @TODO: possible add throttle to avoid too frequently hitting
+
 export default function Carousel() {
-  const [currIdx, setCurrIdx] = useState(0);
+  const [currIdx, setCurrIdx] = useState(-1);
   const itemsRef = useRef<HTMLDivElement | null>(null);
+  const innerRef = useRef<HTMLDivElement | null>(null);
+
+  const [images, setImages] = useState<
+    {
+      id: number;
+      idx: number;
+      src: string;
+      width: number;
+      height: number;
+      alt: string;
+    }[]
+  >([]);
+
+  const [_, updateState] = useState({});
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+  useEffect(() => {
+    if (itemsRef.current) {
+      forceUpdate();
+      setImages(imagesData);
+    }
+  }, [itemsRef.current]);
 
   const infinite = (direction: string) => {
+    if (innerRef.current) {
+      if (!innerRef.current.classList.contains("transition")) {
+        innerRef.current.classList.add("transition");
+      }
+      if (!innerRef.current.classList.contains("duration-500")) {
+        innerRef.current.classList.add("duration-500");
+      }
+    }
+
     if (direction === "right") {
-      if (images.length * -1 === currIdx - 1) {
-        setCurrIdx(0);
-      } else {
-        setCurrIdx(currIdx - 1);
+      setCurrIdx((prev) => prev - 1);
+
+      if (IMAGE_LENGTH * -1 === currIdx) {
+        setTimeout(() => {
+          innerRef?.current?.classList.remove("transition");
+          innerRef?.current?.classList.remove("duration-500");
+          setCurrIdx(-1);
+        }, 0.5 * 1000);
       }
     }
 
     if (direction === "left") {
-      if (currIdx === 0) {
-        setCurrIdx((images.length - 1) * -1);
-      } else {
-        setCurrIdx(currIdx + 1);
+      setCurrIdx((prev) => prev + 1);
+      if (currIdx === -1) {
+        setTimeout(() => {
+          innerRef?.current?.classList.remove("transition");
+          innerRef?.current?.classList.remove("duration-500");
+          setCurrIdx(IMAGE_LENGTH * -1);
+        }, 0.5 * 1000);
       }
     }
   };
-  console.log({ currIdx });
+
   return (
-    <div className="relative flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       {/* frame */}
-      <div>
-        {currIdx * -1 + 1} / {images.length}
+      <div className="py-4">
+        {currIdx === -1 || (IMAGE_LENGTH + 1) * -1 === currIdx
+          ? 1
+          : currIdx === 0
+          ? IMAGE_LENGTH
+          : currIdx * -1}{" "}
+        / {IMAGE_LENGTH}
       </div>
-      <div className="w-full overflow-hidden max-w-md h-fit flex flex-col justify-center">
-        {/* items */}
+      <div className="relative ">
         <div
           ref={itemsRef}
-          // className="flex transition duration-500"
-          className={[
-            "flex",
-            currIdx !== 0 &&
-              currIdx !== -(images.length - 1) &&
-              "transition duration-500",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-          style={{
-            transform: itemsRef?.current?.clientWidth
-              ? `translateX(${itemsRef?.current?.clientWidth * currIdx}px)`
-              : "translateX(0px)",
-          }}
+          className="w-full  overflow-hidden max-w-md h-fit flex flex-col justify-center"
         >
-          {/* images */}
-          {images.map(({ id, src, width, height, alt }) => (
-            <Image
-              key={id}
-              src={src}
-              width={width}
-              height={height}
-              alt={alt}
-              priority
-            />
-          ))}
+          {/* items */}
+          {itemsRef?.current && (
+            <div
+              ref={innerRef}
+              className="flex"
+              style={{
+                transform: `translateX(${
+                  itemsRef?.current?.clientWidth * currIdx
+                }px)`,
+              }}
+            >
+              {/* images */}
+              {images.map(({ id, src, width, height, alt }) => (
+                <Image
+                  key={id}
+                  src={src}
+                  width={width}
+                  height={height}
+                  alt={alt}
+                  priority
+                />
+              ))}
+            </div>
+          )}
         </div>
+        {itemsRef.current && (
+          <>
+            <button
+              className="absolute left-0 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
+              onClick={() => infinite("left")}
+            >
+              &lt;
+            </button>
+            <button
+              className="absolute right-0 top-1/2 -translate-y-2/3 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
+              onClick={() => infinite("right")}
+            >
+              &gt;
+            </button>
+          </>
+        )}
       </div>
-      <button
-        className="absolute left-0 top-1/2 -translate-y-2/3 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
-        onClick={() => infinite("left")}
-      >
-        &lt;
-      </button>
-      <button
-        className="absolute right-0 top-1/2 -translate-y-2/3 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
-        onClick={() => infinite("right")}
-      >
-        &gt;
-      </button>
-      <div>. . .</div>
     </div>
   );
 }
