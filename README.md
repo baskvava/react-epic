@@ -12,7 +12,7 @@ The benefits to try as much as possible without using library from outside.
 
 - [x] Calendar
 
-- [ ] Carousel (on going)
+- [x] Carousel
 
 ## Getting Started
 
