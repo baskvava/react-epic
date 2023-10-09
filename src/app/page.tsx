@@ -14,7 +14,7 @@ export default function Home() {
       </header>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center content-center">
         {/* calendar */}
-        <div className="w-full border-2 border-sky-800 rounded-lg">
+        <div className="w-full border-2 border-sky-800 rounded-lg bg-sky-50">
           <h5 className="h-1/6 flex justify-center items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
             Calendar
           </h5>
@@ -23,7 +23,7 @@ export default function Home() {
           </div>
         </div>
         {/* Carousel */}
-        <div className="w-full border-2 border-sky-800 rounded-lg">
+        <div className="w-full border-2 border-sky-800 rounded-lg bg-sky-50">
           <h5 className="h-1/6 flex justify-center items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
             Inifite Carousel
           </h5>
