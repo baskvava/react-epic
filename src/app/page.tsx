@@ -1,5 +1,17 @@
 import Calendar from "./conponents/calendar";
 import Carousel from "./conponents/carousel";
+import { GoLinkExternalIcon } from "./conponents/icons";
+import Switch from "./conponents/switch";
+
+const demo = [
+  { id: "calendar", name: "Calendar", component: <Calendar />, link: "" },
+  {
+    id: "inifinite Carousel",
+    name: "Inifinite Carousel",
+    component: <Carousel />,
+  },
+  { id: "switchBtn", name: "Switch Button", component: <Switch /> },
+];
 
 export default function Home() {
   return (
@@ -13,24 +25,24 @@ export default function Home() {
         </h5>
       </header>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center content-center">
-        {/* calendar */}
-        <div className="w-full border-2 border-sky-800 rounded-lg bg-sky-50">
-          <h5 className="h-1/6 flex justify-center items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
-            Calendar
-          </h5>
-          <div className="h-5/6 flex justify-center items-center p-8">
-            <Calendar />
+        {demo.map(({ id, name, component, link }) => (
+          <div
+            id={id}
+            className="w-full border-2 border-sky-800 rounded-lg bg-sky-50"
+          >
+            <div className="h-1/6 px-9 flex justify-between items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
+              <h5>{name}</h5>
+              {link && (
+                <a href={link}>
+                  <GoLinkExternalIcon />
+                </a>
+              )}
+            </div>
+            <div className="h-5/6 flex justify-center items-center p-8">
+              {component}
+            </div>
           </div>
-        </div>
-        {/* Carousel */}
-        <div className="w-full border-2 border-sky-800 rounded-lg bg-sky-50">
-          <h5 className="h-1/6 flex justify-center items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
-            Inifite Carousel
-          </h5>
-          <div className="h-5/6 flex justify-center items-center p-8">
-            <Carousel />
-          </div>
-        </div>
+        ))}
       </section>
     </main>
   );
