@@ -121,7 +121,7 @@ export default function Carousel() {
   return (
     <div className="flex flex-col justify-center items-center">
       {/* frame */}
-      <div className="py-4">
+      <div className="pb-4">
         {currIdx === -1 || (IMAGE_LENGTH + 1) * -1 === currIdx
           ? 1
           : currIdx === 0

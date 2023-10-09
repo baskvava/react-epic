@@ -61,9 +61,6 @@ export default function Calendar() {
     day += 1;
   }
 
-  console.log({ currentMonth });
-  console.log({ currentYear });
-
   return (
     <>
       {/* calendar wrapper */}
