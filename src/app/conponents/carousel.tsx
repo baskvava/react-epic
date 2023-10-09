@@ -9,7 +9,7 @@ const imagesData = [
   {
     id: 0,
     idx: 3,
-    src: "/carousel-4.jpg",
+    src: "/react-epic/carousel-4.jpg",
     width: 500,
     height: 500,
     alt: "dog 5",
@@ -17,7 +17,7 @@ const imagesData = [
   {
     id: 1,
     idx: 0,
-    src: "/carousel-1.jpg",
+    src: "/react-epic/carousel-1.jpg",
     width: 500,
     height: 500,
     alt: "dog 1",
@@ -25,7 +25,7 @@ const imagesData = [
   {
     id: 2,
     idx: 1,
-    src: "/carousel-2.jpg",
+    src: "/react-epic/carousel-2.jpg",
     width: 500,
     height: 500,
     alt: "dog 3",
@@ -33,7 +33,7 @@ const imagesData = [
   {
     id: 3,
     idx: 2,
-    src: "/carousel-3.jpg",
+    src: "/react-epic/carousel-3.jpg",
     width: 500,
     height: 500,
     alt: "dog 4",
@@ -41,7 +41,7 @@ const imagesData = [
   {
     id: 4,
     idx: 3,
-    src: "/carousel-4.jpg",
+    src: "/react-epic/carousel-4.jpg",
     width: 500,
     height: 500,
     alt: "dog 5",
@@ -49,7 +49,7 @@ const imagesData = [
   {
     id: 5,
     idx: 0,
-    src: "/carousel-1.jpg",
+    src: "/react-epic/carousel-1.jpg",
     width: 500,
     height: 500,
     alt: "dog 1",
