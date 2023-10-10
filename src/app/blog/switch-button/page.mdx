@@ -1,0 +1,25 @@
+import BlogPost from "../components/blog-post";
+import Switch from "@/app/conponents/switch";
+import CodeBlock from "../components/code-block";
+
+import rawSwitch from "!!raw-loader!@/app/conponents/switch";
+
+export const meta = {
+  title: "Switch Button",
+  // description: "Getting started with the react and tailwind csss",
+  date: "Oct 09, 2023",
+  readTime: 5,
+};
+
+export default ({ children }) => <BlogPost meta={meta}>{children}</BlogPost>;
+
+## How to create it
+
+<Switch />
+{/* {rawSwitch} */}
+
+```jsx filename="index.js"
+// cccc
+```
+
+<CodeBlock code={rawSwitch} />

@@ -23,6 +23,9 @@ const config: Config = {
         "fade-in": "fade-in 2s linear",
       },
     },
+    fontFamily: {
+      nunito: ["Nunito", "sans-serif"],
+    },
   },
   plugins: [],
 };
