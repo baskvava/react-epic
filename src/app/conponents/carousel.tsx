@@ -75,6 +75,7 @@ export default function Carousel() {
   >([]);
 
   const [_, updateState] = useState({});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const forceUpdate = useCallback(() => updateState({}), []);
 
   useEffect(() => {

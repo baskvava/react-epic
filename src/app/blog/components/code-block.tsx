@@ -12,10 +12,8 @@ export default function CodeBlock({
   language?: string;
 }) {
   return (
-    <SyntaxHighlighter
-      children={code}
-      language={language}
-      style={solarizedDark}
-    />
+    <SyntaxHighlighter language={language} style={solarizedDark}>
+      {code}
+    </SyntaxHighlighter>
   );
 }
