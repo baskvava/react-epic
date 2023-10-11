@@ -16,6 +16,8 @@ The benefits to try as much as possible without using library from outside.
 
 - [x] Carousel
 
+- [x] Switch Button
+
 ## Getting Started
 
 First, run the development server:

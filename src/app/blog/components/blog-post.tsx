@@ -18,18 +18,17 @@ export default function BlogPost({ children, meta }: PropsWithChildren<Props>) {
       <div className="flex flex-col gap-4 max-w-2xl">
         <h1 className="font-nunito text-4xl">{title}</h1>
         <div>
-          <p className="mb-1">{description}</p>
+          <p className="mb-2 -mt-4 text-lg">{description}</p>
           <span
             role="img"
             className="flex items-center gap-x-2"
             aria-label="read time"
           >
-            <span className="mr-4">{date}</span>
-            <GiCoffeeCupIcon />
-            {readTime + " mins read"}
+            <span className="mr-4">{date}</span>☕
+            {" " + readTime + " mins read"}
           </span>
         </div>
-        <article className="flex flex-col gap-2">{children}</article>
+        <article className="flex flex-col gap-6">{children}</article>
       </div>
     </div>
   );

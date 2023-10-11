@@ -1,7 +1,7 @@
 import Calendar from "./conponents/calendar";
 import Carousel from "./conponents/carousel";
 import { GoLinkExternalIcon } from "./conponents/icons";
-import Switch from "./conponents/switch";
+import Switch from "./conponents/Switch/switch";
 
 const demo = [
   {
@@ -36,7 +36,7 @@ export default function Home() {
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center content-center">
         {demo.map(({ id, name, component, link }) => (
           <div
-            id={id}
+            key={id}
             className="w-full border-2 border-sky-800 rounded-lg bg-sky-50"
           >
             <div className="h-1/6 px-9 flex justify-between items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
