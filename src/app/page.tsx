@@ -1,7 +1,7 @@
 import Calendar from "./conponents/calendar";
 import Carousel from "./conponents/carousel";
 import { GoLinkExternalIcon } from "./conponents/icons";
-import Switch from "./conponents/switch/switch";
+import Switch from "./conponents/switch";
 
 const demo = [
   {
