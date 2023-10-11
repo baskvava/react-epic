@@ -4,6 +4,10 @@
 
 [Demo](https://baskvava.github.io/react-epic/)
 
+<img src="https://baskvava.github.io/react-epic/readme-2.png" />
+
+<img src="https://baskvava.github.io/react-epic/readme-1.png" />
+
 The benefits to try as much as possible without using library from outside.
 
 - Practice and deeply understand how it works.
