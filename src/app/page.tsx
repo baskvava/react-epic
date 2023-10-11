@@ -18,7 +18,7 @@ const demo = [
     id: "switchBtn",
     name: "Switch Button",
     component: <Switch />,
-    link: "react-epic/blog/switch-button",
+    link: "blog/switch-button",
   },
 ];
 

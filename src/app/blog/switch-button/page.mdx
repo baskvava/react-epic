@@ -1,4 +1,8 @@
 import BlogPost from "../components/blog-post";
+import Switch from "../components/switch/switch";
+import Switch11 from "../components/switch/switch-1-1";
+import Switch12 from "../components/switch/switch-1-2";
+import Switch21 from "../components/switch//switch-2-1";
 import CodeBlock from "../components/code-block";
 import rawSwitch from "!!raw-loader!../components/switch/switch";
 import rawSwitch11 from "!!raw-loader!../components/switch/switch-1-1";
@@ -17,6 +21,8 @@ export default ({ children }) => <BlogPost meta={meta}>{children}</BlogPost>;
 
 This is a simple and common switch button. Only three elements needed. `label`, `input`, `div`. Let's dirty our hands to build it. 🐱‍💻
 
+<Switch />
+
 ## Step 1
 
 Use `input` with `type="checkbox"` because its behavior is the same as checkbox.
@@ -34,6 +40,8 @@ Only two states used for Swtich: `checked`, `not checked`
 
 ##### 💻 Example
 
+<Switch11 />
+
 ##### 💻 Example Code
 
 <CodeBlock language="html" code={rawSwitch11} />
@@ -44,6 +52,8 @@ Here is the clear example. Let us easily differentiate them.
 
 ##### 💻 Example - Without sr-only
 
+<Switch12 />
+
 ## Step 2
 
 ### Use the pseudo css to add the toggle circle at `div`
@@ -53,6 +63,8 @@ Here is the clear example. Let us easily differentiate them.
 2. For `div`, add aboslute and give it white circle shap
 
 ##### 💻 Example
+
+<Switch21 />
 
 ##### 💻 Example Code
 
@@ -77,6 +89,8 @@ In this section, we only focus on `input` and `div`
 ###### Weeee did it! 🎉 🎉 🎉
 
 ##### 💻 Example
+
+<Switch />
 
 ##### 💻 Example Code
 
