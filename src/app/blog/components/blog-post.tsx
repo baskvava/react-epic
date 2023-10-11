@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-import { GiCoffeeCupIcon } from "./icons";
 
 type Props = {
   meta: {
