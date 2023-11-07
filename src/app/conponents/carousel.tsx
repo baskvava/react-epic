@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const IMAGE_LENGTH = 4;
 
 const imagesData = [
+  // append last image to prepare
   {
     id: 0,
     idx: 3,
@@ -46,6 +47,7 @@ const imagesData = [
     height: 500,
     alt: "dog 5",
   },
+  // append first image to prepare
   {
     id: 5,
     idx: 0,
@@ -74,16 +76,20 @@ export default function Carousel() {
     }[]
   >([]);
 
-  const [_, updateState] = useState({});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const forceUpdate = useCallback(() => updateState({}), []);
-
   useEffect(() => {
-    if (itemsRef.current) {
-      forceUpdate();
+    if (itemsRef.current && images.length === 0) {
+      console.log({ itemsRef });
       setImages(imagesData);
     }
   }, [itemsRef.current]);
+
+  useEffect(() => {
+    if (innerRef.current) {
+      innerRef.current.style.transform = `translateX(${
+        innerRef?.current?.clientWidth * currIdx
+      }px)`;
+    }
+  }, [images.length]);
 
   const infinite = (direction: string) => {
     if (innerRef.current) {
@@ -131,9 +137,10 @@ export default function Carousel() {
         / {IMAGE_LENGTH}
       </div>
       <div className="relative ">
+        {/* carousel wrapper */}
         <div
           ref={itemsRef}
-          className="w-full  overflow-hidden max-w-md h-fit flex flex-col justify-center"
+          className="w-full overflow-hidden max-w-md h-fit flex justify-center"
         >
           {/* items */}
           {itemsRef?.current && (

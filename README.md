@@ -22,6 +22,8 @@ The benefits to try as much as possible without using library from outside.
 
 - [x] Switch Button
 
+- [ ] Select
+
 ## Getting Started
 
 First, run the development server:
