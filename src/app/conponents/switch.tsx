@@ -1,5 +1,5 @@
 type SwitchProps = {
-  toggle: () => void;
+  toggle?: () => void;
 };
 
 export default function Switch({ toggle }: SwitchProps) {
