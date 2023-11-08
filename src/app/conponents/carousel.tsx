@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import Switch from "./switch";
 
 const IMAGE_LENGTH = 4;
 
@@ -64,6 +65,9 @@ export default function Carousel() {
   const [currIdx, setCurrIdx] = useState(-1);
   const itemsRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
+  const [autoPlay, setAutoPlay] = useState<boolean>(false);
+  const startTime = useRef<number | null>(null);
+  const animateRef = useRef<number>(0);
 
   const [images, setImages] = useState<
     {
@@ -78,7 +82,6 @@ export default function Carousel() {
 
   useEffect(() => {
     if (itemsRef.current && images.length === 0) {
-      console.log({ itemsRef });
       setImages(imagesData);
     }
   }, [itemsRef.current]);
@@ -91,7 +94,42 @@ export default function Carousel() {
     }
   }, [images.length]);
 
-  const infinite = (direction: string) => {
+  const update = (timeStamp: number) => {
+    if (!startTime.current) {
+      startTime.current = timeStamp;
+    }
+
+    const diff = timeStamp - startTime.current;
+
+    if (diff > 1500) {
+      startTime.current = null;
+      controlAnimate();
+      setCurrIdx((prev) => prev - 1);
+      // unable to access state here
+    }
+
+    animateRef.current = requestAnimationFrame(update);
+  };
+
+  // auto play
+  useLayoutEffect(() => {
+    if (autoPlay) {
+      animateRef.current = requestAnimationFrame(update);
+    }
+    return () => cancelAnimationFrame(animateRef.current);
+  }, [autoPlay]);
+
+  useEffect(() => {
+    if (autoPlay && (IMAGE_LENGTH + 1) * -1 === currIdx) {
+      setTimeout(() => {
+        innerRef?.current?.classList.remove("transition");
+        innerRef?.current?.classList.remove("duration-500");
+        setCurrIdx(-1);
+      }, 0.5 * 1000);
+    }
+  }, [currIdx, autoPlay]);
+
+  const controlAnimate = () => {
     if (innerRef.current) {
       if (!innerRef.current.classList.contains("transition")) {
         innerRef.current.classList.add("transition");
@@ -100,34 +138,43 @@ export default function Carousel() {
         innerRef.current.classList.add("duration-500");
       }
     }
+  };
 
-    if (direction === "right") {
-      setCurrIdx((prev) => prev - 1);
+  const handleRight = () => {
+    setCurrIdx((prev) => prev - 1);
 
-      if (IMAGE_LENGTH * -1 === currIdx) {
-        setTimeout(() => {
-          innerRef?.current?.classList.remove("transition");
-          innerRef?.current?.classList.remove("duration-500");
-          setCurrIdx(-1);
-        }, 0.5 * 1000);
-      }
+    if (IMAGE_LENGTH * -1 === currIdx) {
+      setTimeout(() => {
+        innerRef?.current?.classList.remove("transition");
+        innerRef?.current?.classList.remove("duration-500");
+        setCurrIdx(-1);
+      }, 0.5 * 1000);
     }
+  };
 
-    if (direction === "left") {
-      setCurrIdx((prev) => prev + 1);
-      if (currIdx === -1) {
-        setTimeout(() => {
-          innerRef?.current?.classList.remove("transition");
-          innerRef?.current?.classList.remove("duration-500");
-          setCurrIdx(IMAGE_LENGTH * -1);
-        }, 0.5 * 1000);
-      }
+  const handleLeft = () => {
+    setCurrIdx((prev) => prev + 1);
+
+    if (currIdx === -1) {
+      setTimeout(() => {
+        innerRef?.current?.classList.remove("transition");
+        innerRef?.current?.classList.remove("duration-500");
+        setCurrIdx(IMAGE_LENGTH * -1);
+      }, 0.5 * 1000);
     }
+  };
+
+  const infinite = (direction: string) => {
+    controlAnimate();
+    direction === "left" ? handleLeft() : handleRight();
   };
 
   return (
     <div className="flex flex-col justify-center items-center">
       {/* frame */}
+      <div className="flex gap-5 items-start w-full">
+        AutoPlay: <Switch toggle={() => setAutoPlay(!autoPlay)} />
+      </div>
       <div className="pb-4">
         {currIdx === -1 || (IMAGE_LENGTH + 1) * -1 === currIdx
           ? 1
