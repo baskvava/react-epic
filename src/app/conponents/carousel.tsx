@@ -182,7 +182,7 @@ export default function Carousel() {
     controlAnimate();
     direction === "left" ? handleLeft() : handleRight();
   };
-  console.log({ autoPlay });
+
   return (
     <div className="flex flex-col justify-center items-center">
       {/* frame */}
