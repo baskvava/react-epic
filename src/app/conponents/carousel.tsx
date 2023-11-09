@@ -123,10 +123,6 @@ export default function Carousel() {
 
   // auto play
   useLayoutEffect(() => {
-    // if (!loop && (currIdx === -1 || IMAGE_LENGTH * -1 === currIdx)) {
-    //   return;
-    // }
-
     if (autoPlay) {
       animateRef.current = requestAnimationFrame(update);
     }
@@ -220,7 +216,7 @@ export default function Carousel() {
             min={500}
             onChange={(e) => setDelay(Number(e.target.value))}
           />{" "}
-          s
+          milliseconds
         </div>
       </div>
       <div className="pb-4">
