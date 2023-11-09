@@ -1,8 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Switch from "./switch";
+import { useDebounce } from "./hooks/useDebounce";
 
 const IMAGE_LENGTH = 4;
 
@@ -66,8 +73,11 @@ export default function Carousel() {
   const itemsRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
+  const [loop, setLoop] = useState<boolean>(true);
   const startTime = useRef<number | null>(null);
   const animateRef = useRef<number>(0);
+  const [delay, setDelay] = useState<number>(1500);
+  const { debouncedValue } = useDebounce(delay, 0.5 * 1000);
 
   const [images, setImages] = useState<
     {
@@ -101,7 +111,7 @@ export default function Carousel() {
 
     const diff = timeStamp - startTime.current;
 
-    if (diff > 1500) {
+    if (diff > debouncedValue) {
       startTime.current = null;
       controlAnimate();
       setCurrIdx((prev) => prev - 1);
@@ -113,11 +123,15 @@ export default function Carousel() {
 
   // auto play
   useLayoutEffect(() => {
+    // if (!loop && (currIdx === -1 || IMAGE_LENGTH * -1 === currIdx)) {
+    //   return;
+    // }
+
     if (autoPlay) {
       animateRef.current = requestAnimationFrame(update);
     }
     return () => cancelAnimationFrame(animateRef.current);
-  }, [autoPlay]);
+  }, [autoPlay, delay, debouncedValue]);
 
   useEffect(() => {
     if (autoPlay && (IMAGE_LENGTH + 1) * -1 === currIdx) {
@@ -164,16 +178,50 @@ export default function Carousel() {
     }
   };
 
-  const infinite = (direction: string) => {
+  const scroll = (direction: string) => {
     controlAnimate();
     direction === "left" ? handleLeft() : handleRight();
   };
-
+  console.log({ autoPlay });
   return (
     <div className="flex flex-col justify-center items-center">
       {/* frame */}
-      <div className="flex gap-5 items-start w-full">
-        AutoPlay: <Switch toggle={() => setAutoPlay(!autoPlay)} />
+      <div className="flex flex-col gap-5 items-start w-full mt-2 mb-5">
+        <div className="flex gap-5">
+          <div className="flex gap-5">
+            AutoPlay:{" "}
+            <Switch
+              checked={autoPlay}
+              toggle={() => {
+                setAutoPlay((prev) => !prev);
+                if (!autoPlay) {
+                  setLoop(true);
+                }
+              }}
+            />
+          </div>
+          <div className="flex gap-5">
+            Loop:
+            <Switch
+              disabled={autoPlay}
+              checked={loop}
+              toggle={() => {
+                setLoop(!loop);
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex gap-5">
+          Delay:{" "}
+          <input
+            className="border solid border-black"
+            type="number"
+            value={delay}
+            min={500}
+            onChange={(e) => setDelay(Number(e.target.value))}
+          />{" "}
+          s
+        </div>
       </div>
       <div className="pb-4">
         {currIdx === -1 || (IMAGE_LENGTH + 1) * -1 === currIdx
@@ -216,18 +264,22 @@ export default function Carousel() {
         </div>
         {itemsRef.current && (
           <>
-            <button
-              className="absolute left-0 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
-              onClick={() => infinite("left")}
-            >
-              &lt;
-            </button>
-            <button
-              className="absolute right-0 top-1/2 -translate-y-2/3 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
-              onClick={() => infinite("right")}
-            >
-              &gt;
-            </button>
+            {(loop || (!loop && currIdx !== -1)) && (
+              <button
+                className="absolute left-0 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
+                onClick={() => scroll("left")}
+              >
+                &lt;
+              </button>
+            )}
+            {(loop || (!loop && currIdx !== IMAGE_LENGTH * -1)) && (
+              <button
+                className="absolute right-0 top-1/2 -translate-y-2/3 px-2 py-0.5 bg-slate-600 opacity-80 hover:opacity-60 border-solid border-2 rounded-full border-slate-600 text-slate-50 font-bold"
+                onClick={() => scroll("right")}
+              >
+                &gt;
+              </button>
+            )}
           </>
         )}
       </div>
