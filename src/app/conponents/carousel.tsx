@@ -1,13 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Switch from "./switch";
 import { useDebounce } from "./hooks/useDebounce";
 
@@ -74,6 +68,7 @@ export default function Carousel() {
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
   const [loop, setLoop] = useState<boolean>(true);
+  const [dots, setDots] = useState<boolean>(true);
   const startTime = useRef<number | null>(null);
   const animateRef = useRef<number>(0);
   const [delay, setDelay] = useState<number>(1500);
@@ -127,7 +122,7 @@ export default function Carousel() {
       animateRef.current = requestAnimationFrame(update);
     }
     return () => cancelAnimationFrame(animateRef.current);
-  }, [autoPlay, delay, debouncedValue]);
+  }, [autoPlay, delay, debouncedValue, currIdx]);
 
   useEffect(() => {
     if (autoPlay && (IMAGE_LENGTH + 1) * -1 === currIdx) {
@@ -179,12 +174,17 @@ export default function Carousel() {
     direction === "left" ? handleLeft() : handleRight();
   };
 
+  const handleDots = (idx: number) => {
+    controlAnimate();
+    setCurrIdx(() => idx);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       {/* frame */}
       <div className="flex flex-col gap-5 items-start w-full mt-2 mb-5">
         <div className="flex gap-5">
-          <div className="flex gap-5">
+          <div className="flex gap-2">
             AutoPlay:{" "}
             <Switch
               checked={autoPlay}
@@ -196,13 +196,22 @@ export default function Carousel() {
               }}
             />
           </div>
-          <div className="flex gap-5">
+          <div className="flex gap-2">
             Loop:
             <Switch
               disabled={autoPlay}
               checked={loop}
               toggle={() => {
                 setLoop(!loop);
+              }}
+            />
+          </div>
+          <div className="flex gap-2">
+            Dots:
+            <Switch
+              checked={dots}
+              toggle={() => {
+                setDots(!dots);
               }}
             />
           </div>
@@ -277,6 +286,17 @@ export default function Carousel() {
               </button>
             )}
           </>
+        )}
+        {dots && (
+          <div className="my-2 flex gap-2 justify-center">
+            {[-1, -2, -3, -4].map((id) => (
+              <button
+                key={id}
+                className="w-3 h-3 bg-gray-500 rounded-full"
+                onClick={() => handleDots(id)}
+              ></button>
+            ))}
+          </div>
         )}
       </div>
     </div>
