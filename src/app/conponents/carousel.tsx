@@ -60,8 +60,6 @@ const imagesData = [
   },
 ];
 
-// @TODO: possible add throttle to avoid too frequently hitting
-
 export default function Carousel() {
   const [currIdx, setCurrIdx] = useState(-1);
   const itemsRef = useRef<HTMLDivElement | null>(null);
@@ -292,7 +290,14 @@ export default function Carousel() {
             {[-1, -2, -3, -4].map((id) => (
               <button
                 key={id}
-                className="w-3 h-3 bg-gray-500 rounded-full"
+                className={[
+                  "w-3",
+                  "h-3",
+                  `${currIdx == id ? "bg-gray-500" : "bg-gray-300"}`,
+                  "rounded-full",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 onClick={() => handleDots(id)}
               ></button>
             ))}
