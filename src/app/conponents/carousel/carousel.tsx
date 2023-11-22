@@ -2,92 +2,75 @@
 
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Switch from "./switch";
-import { useDebounce } from "./hooks/useDebounce";
+import { useDebounce } from "../hooks/useDebounce";
 
-const IMAGE_LENGTH = 4;
+type Props = {
+  images: {
+    url: string;
+    alt: string;
+  }[];
+  height?: number;
+  width?: number;
+  delay?: number;
+  autoPlay?: boolean;
+  dots?: boolean;
+  loop?: boolean;
+};
 
-const imagesData = [
-  // append last image to prepare
-  {
-    id: 0,
-    idx: 3,
-    src: "/react-epic/carousel-4.jpg",
-    width: 500,
-    height: 500,
-    alt: "dog 5",
-  },
-  {
-    id: 1,
-    idx: 0,
-    src: "/react-epic/carousel-1.jpg",
-    width: 500,
-    height: 500,
-    alt: "dog 1",
-  },
-  {
-    id: 2,
-    idx: 1,
-    src: "/react-epic/carousel-2.jpg",
-    width: 500,
-    height: 500,
-    alt: "dog 3",
-  },
-  {
-    id: 3,
-    idx: 2,
-    src: "/react-epic/carousel-3.jpg",
-    width: 500,
-    height: 500,
-    alt: "dog 4",
-  },
-  {
-    id: 4,
-    idx: 3,
-    src: "/react-epic/carousel-4.jpg",
-    width: 500,
-    height: 500,
-    alt: "dog 5",
-  },
-  // append first image to prepare
-  {
-    id: 5,
-    idx: 0,
-    src: "/react-epic/carousel-1.jpg",
-    width: 500,
-    height: 500,
-    alt: "dog 1",
-  },
-];
+/**
+ * A11y Enhancement:
+ * TabIndex - 0 focusable, -1 not focusable
+ * role="region"
+ * aria-label="Carousel"
+ *
+ * Scroll Enhancement:
+ * ScrollTo to replace tranform: translateX(xxxpx)
+ */
 
-export default function Carousel() {
+export default function Carousel({
+  images: data,
+  width = 500,
+  height = 500,
+  delay = 1500,
+  autoPlay = false,
+  loop = false,
+  dots = false,
+}: Props) {
+  const IMAGE_LENGTH = data.length;
+
   const [currIdx, setCurrIdx] = useState(-1);
   const itemsRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
-  const [autoPlay, setAutoPlay] = useState<boolean>(false);
-  const [loop, setLoop] = useState<boolean>(true);
-  const [dots, setDots] = useState<boolean>(true);
   const startTime = useRef<number | null>(null);
   const animateRef = useRef<number>(0);
-  const [delay, setDelay] = useState<number>(1500);
   const { debouncedValue } = useDebounce(delay, 0.5 * 1000);
 
   const [images, setImages] = useState<
     {
-      id: number;
       idx: number;
-      src: string;
-      width: number;
-      height: number;
+      url: string;
       alt: string;
+      ariaHidden?: boolean;
     }[]
   >([]);
 
   useEffect(() => {
-    if (itemsRef.current && images.length === 0) {
-      setImages(imagesData);
+    // possible return some error msg if data.length not greater than 0
+
+    if (itemsRef.current && images.length === 0 && data.length > 0) {
+      // process data before setImages
+      // clone to append last to first and append last to first
+      const imageData = [
+        // optimization A11y: add aria-hidden for screen reader setting, set aria-hidden false for the clone to void screen reader
+        { ...data[data.length - 1], ariaHidden: true },
+        ...data,
+        // optimization A11y: add aria-hidden for screen reader setting, set aria-hidden false for the clone to void screen reader
+        { ...data[0], ariaHidden: true },
+      ].map((d, idx) => ({ ...d, idx }));
+
+      setImages(imageData);
     }
-  }, [itemsRef.current]);
+  }, [itemsRef.current, data.length]);
 
   useEffect(() => {
     if (innerRef.current) {
@@ -180,52 +163,6 @@ export default function Carousel() {
   return (
     <div className="flex flex-col justify-center items-center">
       {/* frame */}
-      <div className="flex flex-col gap-5 items-start w-full mt-2 mb-5">
-        <div className="flex gap-5">
-          <div className="flex gap-2">
-            AutoPlay:{" "}
-            <Switch
-              checked={autoPlay}
-              toggle={() => {
-                setAutoPlay((prev) => !prev);
-                if (!autoPlay) {
-                  setLoop(true);
-                }
-              }}
-            />
-          </div>
-          <div className="flex gap-2">
-            Loop:
-            <Switch
-              disabled={autoPlay}
-              checked={loop}
-              toggle={() => {
-                setLoop(!loop);
-              }}
-            />
-          </div>
-          <div className="flex gap-2">
-            Dots:
-            <Switch
-              checked={dots}
-              toggle={() => {
-                setDots(!dots);
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex gap-5">
-          Delay:{" "}
-          <input
-            className="border solid border-black"
-            type="number"
-            value={delay}
-            min={500}
-            onChange={(e) => setDelay(Number(e.target.value))}
-          />{" "}
-          milliseconds
-        </div>
-      </div>
       <div className="pb-4">
         {currIdx === -1 || (IMAGE_LENGTH + 1) * -1 === currIdx
           ? 1
@@ -252,13 +189,14 @@ export default function Carousel() {
               }}
             >
               {/* images */}
-              {images.map(({ id, src, width, height, alt }) => (
+              {images.map(({ idx, url, alt, ariaHidden }) => (
                 <Image
-                  key={id}
-                  src={src}
+                  key={idx}
+                  src={url}
                   width={width}
                   height={height}
                   alt={alt}
+                  aria-hidden={ariaHidden}
                   priority
                 />
               ))}
