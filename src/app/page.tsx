@@ -43,7 +43,7 @@ export default function Home() {
             className="w-full border-2 border-sky-800 rounded-lg bg-sky-50"
           >
             {/* title */}
-            <div className="h-1/6 px-9 flex justify-between items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
+            <div className="h-fit py-4 px-9 flex justify-between items-center border-b-2 border-sky-800 font-mono font-bold text-gray-200 bg-sky-800">
               <h5>{name}</h5>
               {link && (
                 <span title="How it works">
@@ -54,7 +54,7 @@ export default function Home() {
               )}
             </div>
             {/* body */}
-            <div className="h-5/6 flex justify-center items-center p-8">
+            <div className="h-full flex justify-center items-center p-8">
               {component}
             </div>
           </div>
