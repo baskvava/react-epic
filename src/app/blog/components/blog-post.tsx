@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { AiFillHome } from "react-icons/ai";
 
 type Props = {
   meta: {
@@ -15,7 +16,13 @@ export default function BlogPost({ children, meta }: PropsWithChildren<Props>) {
   return (
     <div className="blog w-full flex flex-col justify-center items-center mt-0 mb-20">
       <nav className="flex justify-start items-start w-full max-w-2xl py-10">
-        <a href="/react-epic">Home</a>
+        <a
+          href="/react-epic"
+          className="flex gap-1 justify-center items-center border-solid border-2 border-transparent hover:border-b-green-400"
+        >
+          <AiFillHome className="fill-green-700" />
+          Home
+        </a>
       </nav>
       <div className="flex flex-col gap-4 max-w-2xl">
         <h1 className="font-nunito text-4xl">{title}</h1>
