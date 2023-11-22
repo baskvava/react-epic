@@ -13,7 +13,10 @@ type Props = {
 export default function BlogPost({ children, meta }: PropsWithChildren<Props>) {
   const { title, description, date, readTime } = meta;
   return (
-    <div className="blog w-full flex justify-center items-center my-20">
+    <div className="blog w-full flex flex-col justify-center items-center mt-0 mb-20">
+      <nav className="flex justify-start items-start w-full max-w-2xl py-10">
+        <a href="../..">Home</a>
+      </nav>
       <div className="flex flex-col gap-4 max-w-2xl">
         <h1 className="font-nunito text-4xl">{title}</h1>
         <div>
