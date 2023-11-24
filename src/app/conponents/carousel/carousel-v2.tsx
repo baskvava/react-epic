@@ -21,8 +21,8 @@ interface Props {
 
 export default function CarouselV2({
   data = [],
-  width = 500,
-  height = 500,
+  width = 380,
+  height = 380,
   loop = false,
   dots = true,
   autoPlay = true,
